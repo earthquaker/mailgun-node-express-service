@@ -1,14 +1,15 @@
 # mailgun-node-express-service
 
+
+### Available on
 ```
-# Available on
-https://builderappmail.herokuapp.com/
+[builderappmail.herokuapp.com](https://builderappmail.herokuapp.com/)
 ```
 
+### Inspiration from
 ```
-# Inspiration from
-https://www.youtube.com/watch?v=zrXOjWICmGw [How to send server email with Node.js - sendgrid, mandrill, mailgun, etc.]
-https://github.com/bojand/mailgun-js
-http://stackoverflow.com/questions/1653308/access-control-allow-origin-multiple-origin-domains
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+Express Generator where i created all the boilerplate <http://expressjs.com/en/starter/generator.html>
+[YouTube: How to send server email with Node.js](https://www.youtube.com/watch?v=zrXOjWICmGw/)
+[Mailgun-js](https://github.com/bojand/mailgun-js)
+[Access_control_CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS)
 ```
