@@ -6,13 +6,13 @@ var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: req });
+  res.render('index', { title: 'test' });
 
   var data = {
     from: 'Tival <no-reply@tival.se>',
     to: 'pe_lias@msn.com',
     subject: 'Tival orderbekräftelse1',
-    text: '<b>Här kommer din orderbekräftelse.</b>'
+    text: req.config.data.appartmentnumber || ''
   };
 
   mailgun.messages().send(data, function (error, body) {
