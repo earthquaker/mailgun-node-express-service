@@ -13,8 +13,8 @@ router.post('/', function(req, res, next) {
     to: 'pe_lias@msn.com',
     subject: 'Tival orderbekräftelse',
     text: 'Appartmentnumber: ' + req.body.appartmentnumber +
-          'CustomerOne: ' + req.body.customerOne +
-          'Date: ' + req.body.date
+          ' CustomerOne: ' + req.body.customerOne +
+          ' Date: ' + req.body.date
   };
 
   mailgun.messages().send(data, function (error, body) {
