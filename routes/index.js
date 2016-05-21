@@ -5,14 +5,14 @@ var domain = 'sandboxae45f31018c7420aa1a8f72e463e52c8.mailgun.org';
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: req.config.data.appartmentnumber });
+router.post('/', function(req, res, next) {
+  res.render('index', { title: 'App'});
 
   var data = {
     from: 'Tival <no-reply@tival.se>',
     to: 'pe_lias@msn.com',
     subject: 'Tival orderbekräftelse1',
-    text: req.config.data.appartmentnumber || ''
+    text: 'test'
   };
 
   mailgun.messages().send(data, function (error, body) {
