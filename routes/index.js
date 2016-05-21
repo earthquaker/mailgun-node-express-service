@@ -11,8 +11,10 @@ router.post('/', function(req, res, next) {
   var data = {
     from: 'Tival <no-reply@tival.se>',
     to: 'pe_lias@msn.com',
-    subject: 'Tival orderbekräftelse1',
-    text: 'test'
+    subject: 'Tival orderbekräftelse',
+    text: 'Appartmentnumber: ' + req.body.appartmentnumber +
+          'CustomerOne: ' + req.body.customerOne +
+          'Date: ' + req.body.date
   };
 
   mailgun.messages().send(data, function (error, body) {
