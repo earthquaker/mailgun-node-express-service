@@ -6,7 +6,7 @@ var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: req });
 
   var data = {
     from: 'Tival <no-reply@tival.se>',
