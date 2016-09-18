@@ -14,7 +14,7 @@ router.post('/', function(req, res, next) {
     to: 'pe_lias@msn.com',
     cc: 'salmin89@hotmail.com',
     subject: 'Tival orderbekräftelse',
-    text: req.body.key
+    html:"<h1>TIVAL TITLE</h1><p>"+req.body.key+"<p>"
   };
 
   mailgun.messages().send(data, function (error, body) {
