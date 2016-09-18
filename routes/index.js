@@ -9,7 +9,7 @@ router.post('/', function(req, res, next) {
 
   res.render('index', { title: 'App'});
 
-  //req.body.key
+  var confirmLink = "https://tival.se/#/confirmation/"+req.body.key;
 
   // Send mail
   var data = {
