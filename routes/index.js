@@ -9,13 +9,15 @@ router.post('/', function(req, res, next) {
 
   res.render('index', { title: 'App'});
 
+  //req.body.key
+
   // Send mail
   var data = {
     from: 'Tival <no-reply@tival.se>',
     to: 'pe_lias@msn.com',
     cc: 'salmin89@hotmail.com',
     subject: 'Tival orderbekräftelse',
-    html:"<h1>TIVAL ORDERBEKRÄFTELSE</h1> Ladda ner <a href='https://tival.se/#/confirmation/'"+req.body.key+">bekräftelse</a>"
+    html:"<h1>TIVAL ORDERBEKRÄFTELSE</h1> Ladda ner <a href='https://tival.se/#/confirmation/'>bekräftelse</a>"
   };
 
   mailgun.messages().send(data, function (error, body) {
