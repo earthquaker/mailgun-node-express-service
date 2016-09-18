@@ -28,7 +28,7 @@ router.post('/', function(req, res, next) {
     to: 'pe_lias@msn.com',
     cc: 'salmin89@hotmail.com',
     subject: 'Tival orderbekräftelse',
-    html:"<h1>TIVAL ORDERBEKRÄFTELSE</h1>Här kommer en bekräftelse på valen ni gjort<br />Bekräftelsen kan laddas ner här:<a href='https://tival.se/#/confirmation'>Ladda ner</a>"
+    html:"<h1>TIVAL ORDERBEKRÄFTELSE</h1><a href='https://tival.se'>Link</a>"
   };
 
   mailgun.messages().send(data, function (error, body) {
