@@ -7,15 +7,14 @@ var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 /* GET home page. */
 router.post('/', function(req, res, next) {
   res.render('index', { title: 'App'});
+  console.log("body...", req.body);
 
   var data = {
     from: 'Tival <no-reply@tival.se>',
     to: 'pe_lias@msn.com',
     cc: 'salmin89@hotmail.com',
     subject: 'Tival orderbekräftelse',
-    text: 'Appartmentnumber: ' + req.body.appartmentnumber +
-          ' CustomerOne: ' + req.body.customerOne +
-          ' Date: ' + req.body.date
+    text: req.body
   };
 
   mailgun.messages().send(data, function (error, body) {
