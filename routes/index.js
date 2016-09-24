@@ -3,7 +3,10 @@ var router = express.Router();
 var api_key = 'key-d956cf5597f0751aaac1d4593ad6b990';
 var domain = 'tival.se';
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
-var StringBuilder = require('../services/stringBuilder.js');
+//
+// var StringBuilder = require('../services/stringBuilder.js');
+
+var formatPrice = require('../services/formatPrice.js');
 
 var firebase = require('firebase');
 var FBconfig = {
@@ -25,45 +28,92 @@ router.post('/', function(req, res, next) {
   var customerInfoRef = firebase.database().ref("projects").child(req.body.projectKey).child("sessionCarts").child(req.body.customerKey);
   var projectSettingsRef = firebase.database().ref("projects").child(req.body.projectKey).child("projectSettings");
 
-  var userData = null;
-  var projectData = null;
+
+  //Globals
+  var global = {
+    userData: null,
+    projectData: null
+  };
+
 
   customerInfoRef.once("value", function(snapshot) {
-    userData = snapshot.val();
+    global.userData = snapshot.val();
     onComplete();
   });
 
   projectSettingsRef.once("value", function(snapshot) {
-    projectData = snapshot.val();
+    global.projectData = snapshot.val();
     onComplete();
   });
 
   function onComplete() {
-    if (userData && projectData)
+    if (global.userData && global.projectData)
     {
-      createHtml(userData, projectData);
+      createHtml();
     }
   }
 
-  function createHtml(userData, projectData){
-    var body = new StringBuilder();
+  function createHtml(){
+
+    var htmlBody = generateCartSummary();
 
 
-    var user = userData.customerInfo;
-    var cart = userData.cart;
-
-    //sendEmail(user, body);
+    sendEmail(htmlBody);
   }
 
-  function sendEmail(user, body) {
+  function generateCartSummary() {
 
-    console.log(user.email);
+    var cart = global.userData.cart;
+    var body = "";
+
+    body += "<table style='width: 1024px; text-align: left;border-collapse: collapse;'>" +
+        "<tr style='border-bottom: 1px solid #000'>" +
+        "<th style='width: 25%;'>Tillval</th>" +
+        "<th style='width: 50%;'></th>" +
+        "<th style='width: 25%;text-align: right;'>Belopp</th>" +
+        "</tr>";
+
+    for (var category in cart) {
+
+      body += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+      body += "<tr>";
+      body += "<th>" + cart[category].categoryTitle + "</th>";
+      body += "<th></th>";
+      body += "<th></th>";
+      body += "</tr>";
+
+      for (var categoryItem in cart[category]) {
+
+        if (categoryItem != "categoryTitle") {
+
+          body += "<tr>";
+          body += "<td>" + cart[category][categoryItem].categoryItemTitle + "</td>";
+          body += "<td>" + cart[category][categoryItem].title + "</td>";
+          body += "<td style='text-align: right;'>" + formatPrice(cart[category][categoryItem].price) + " kr</td>";
+          body += "<tr>";
+
+        }
+      }
+    }
+
+    body += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+    body += "<tr style='border-top: 1px solid #000'>" +
+        "<td></td>" +
+        "<td style='text-align: right;'><b>Total inklusive moms: </b></td>" +
+        "<td style='text-align: right;'>" + formatPrice(global.userData.total) + " kr</td>" +
+        "</tr>" +
+        "</table>";
+
+    return body;
+  }
+
+  function sendEmail(htmlBody) {
     var data = {
       from: 'Tival <no-reply@tival.se>',
-      to: user.email,
-      cc: 'salmin89@hotmail.com;pe_lias@msn.com',
-      subject: 'Tival orderbekräftelse',
-      html:"<h1>TIVAL ORDERBEKRÄFTELSE</h1> Ladda ner <a href='"+ confirmLink +"'>bekräftelse</a>"
+      to: global.userData.customerInfo.email,
+      cc: global.projectData.projectEmail,
+      subject: global.projectData.projectName + ' orderbekräftelse',
+      html: htmlBody
     };
 
     mailgun.messages().send(data, function (error, body) {
