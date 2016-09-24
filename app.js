@@ -7,17 +7,8 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var firebase = require('firebase');
 
 var app = express();
-
-var FBconfig = {
-  apiKey: "AIzaSyD5B_DssWCtBgWn_2-Cy0LhTZGeErAYAJE",
-  authDomain: "100meter.firebaseapp.com",
-  databaseURL: "https://100meter.firebaseio.com",
-  storageBucket: "project-8799195801841300390.appspot.com",
-};
-firebase.initializeApp(FBconfig);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,7 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://tival.se");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
