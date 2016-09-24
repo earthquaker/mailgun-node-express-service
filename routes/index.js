@@ -56,7 +56,7 @@ router.post('/', function(req, res, next) {
   function createHtml(){
 
     var htmlBody = "<h1>Orderbekräftelse</h1>" +
-        "<h2>" + global.projectData.projectName + "</h2>" +
+        "<h3>" + global.projectData.projectName + "</h3>" +
         "<p>Lägenhetsnummer: " + global.userData.customerInfo.appartmentnumber + "</p>" +
         "<p>Upprättad datum: " + global.userData.customerInfo.date + "</p>";
 
