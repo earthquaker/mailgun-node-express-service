@@ -55,9 +55,19 @@ router.post('/', function(req, res, next) {
 
   function createHtml(){
 
-    var htmlBody = generateCartSummary();
+    var htmlBody = "<h1>Orderbekräftelse</h1>" +
+        "<h2>" + global.projectData.projectName + "</h2>" +
+        "<p>Lägenhetsnummer: " + global.userData.customerInfo.appartmentnumber + "</p>" +
+        "<p>Upprättad datum: " + global.userData.customerInfo.date + "</p>";
 
+    htmlBody += "<br><br>";
+    htmlBody += generateCustomerInfo();
 
+    htmlBody += "<br><br>";
+    htmlBody += generateCartSummary();
+
+    htmlBody += "<br><br>";
+    htmlBody += "<a href='" + confirmLink + "'>Spara som PDF</a>";
     sendEmail(htmlBody);
   }
 
@@ -107,11 +117,40 @@ router.post('/', function(req, res, next) {
     return body;
   }
 
+  function generateCustomerInfo() {
+
+    var body = "<table style='width: 1024px; text-align: left;border-collapse: collapse;'>" +
+                  "<tr>" +
+                    "<th style='width: 50%;'>Kund</th>" +
+                    "<th style='width: 50%;'>" + global.projectData.companyName + "</th>" +
+                  "</tr>" +
+                  "<tr>" +
+                    "<td>" + global.userData.customerInfo.customerOne + "</td>" +
+                    "<td>" + global.projectData.companyStreet + "</td>" +
+                  "</tr>" +
+                  "<tr>" +
+                    "<td>" + global.userData.customerInfo.phone + "</td>" +
+                    "<td>" + global.projectData.companyZip + " " + global.projectData.companyCity + "</td>" +
+                  "</tr>" +
+                  "<tr>" +
+                    "<td>" + global.userData.customerInfo.email + "</td>" +
+                    "<td>" + global.projectData.companyPhone + "</td>" +
+                  "</tr>" +
+                  "<tr>" +
+                    "<td></td>" +
+                    "<td><a href='" + global.projectData.companyWebsite + "'></a>" + global.projectData.companyWebsite + "</td>" +
+                  "</tr>" +
+                "</table>";
+
+    return body;
+  }
+
   function sendEmail(htmlBody) {
     var data = {
       from: 'Tival <no-reply@tival.se>',
       to: global.userData.customerInfo.email,
       cc: global.projectData.projectEmail,
+      bcc: 'salmin89@skenderovic.se;<123:123>',
       subject: global.projectData.projectName + ' orderbekräftelse',
       html: htmlBody
     };
