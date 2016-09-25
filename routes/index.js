@@ -98,7 +98,7 @@ router.post('/', function(req, res, next) {
 
           body += "<tr>";
           body += "<td>" + cart[category][categoryItem].categoryItemTitle + "</td>";
-          body += "<td>" + cart[category][categoryItem].title + "</td>";
+          body += "<td>" + cart[category][categoryItem].title==cart[category][categoryItem].categoryItemTitle?"Ja":cart[category][categoryItem].title + "</td>";
           body += "<td style='text-align: right;'>" + formatPrice(cart[category][categoryItem].price) + " kr</td>";
           body += "<tr>";
 
