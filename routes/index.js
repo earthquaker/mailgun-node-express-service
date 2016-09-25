@@ -125,7 +125,7 @@ router.post('/', function(req, res, next) {
                     "<th style='width: 50%;'>" + global.projectData.companyName + "</th>" +
                   "</tr>" +
                   "<tr>" +
-                    "<td>" + global.userData.customerInfo.customerOne + "</td>" +
+                    "<td>" + global.userData.customerInfo.name + "</td>" +
                     "<td>" + global.projectData.companyStreet + "</td>" +
                   "</tr>" +
                   "<tr>" +
