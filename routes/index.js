@@ -23,8 +23,10 @@ router.post('/', function(req, res, next) {
 
   res.render('index', { title: 'App'});
 
+    // The confirmation-link
   var confirmLink = "https://tival.se/#/confirmation/"+req.body.projectKey + "/" + req.body.customerKey;
 
+    // References
   var customerInfoRef = firebase.database().ref("projects").child(req.body.projectKey).child("sessionCarts").child(req.body.customerKey);
   var projectSettingsRef = firebase.database().ref("projects").child(req.body.projectKey).child("projectSettings");
 
@@ -35,17 +37,19 @@ router.post('/', function(req, res, next) {
     projectData: null
   };
 
-
+    // Get Customer info
   customerInfoRef.once("value", function(snapshot) {
     global.userData = snapshot.val();
     onComplete();
   });
 
+    // Get projectSettings info
   projectSettingsRef.once("value", function(snapshot) {
     global.projectData = snapshot.val();
     onComplete();
   });
 
+    // Checks if we have both global dependencies
   function onComplete() {
     if (global.userData && global.projectData)
     {
@@ -53,6 +57,7 @@ router.post('/', function(req, res, next) {
     }
   }
 
+    // Creates the whole HTML-body for the email
   function createHtml(){
 
     var htmlBody = "<h1>Orderbekräftelse</h1>" +
@@ -71,11 +76,14 @@ router.post('/', function(req, res, next) {
     sendEmail(htmlBody);
   }
 
+    // Generates the whole summary table
+    // Returns: the html-string
   function generateCartSummary() {
 
     var cart = global.userData.cart;
     var body = "";
 
+      // Headings
     body += "<table style='width: 1024px; text-align: left;border-collapse: collapse;'>" +
         "<tr style='border-bottom: 1px solid #000'>" +
         "<th style='width: 25%;'>Tillval</th>" +
@@ -83,6 +91,8 @@ router.post('/', function(req, res, next) {
         "<th style='width: 25%;text-align: right;'>Belopp</th>" +
         "</tr>";
 
+      // Each category /Huvudkategori
+      // ARRAY
     for (var category in cart) {
 
       body += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
@@ -92,13 +102,23 @@ router.post('/', function(req, res, next) {
       body += "<th></th>";
       body += "</tr>";
 
+        // Each Category Item /Underkategori
+        // Array
       for (var categoryItem in cart[category]) {
 
+          //categoryItem == title of the categories
         if (categoryItem != "categoryTitle") {
 
           body += "<tr>";
           body += "<td>" + cart[category][categoryItem].categoryItemTitle + "</td>";
-          body += "<td>" + cart[category][categoryItem].title==cart[category][categoryItem].categoryItemTitle?"Ja":cart[category][categoryItem].title + "</td>";
+
+            // Print "Ja" if the itemTitle is the same as the categoryItemTitle
+            if (cart[category][categoryItem].title==cart[category][categoryItem].categoryItemTitle) {
+                body += "<td>Ja</td>";
+            } else {
+                body += "<td>" + cart[category][categoryItem].title + "</td>";
+            }
+            //Price
           body += "<td style='text-align: right;'>" + formatPrice(cart[category][categoryItem].price) + " kr</td>";
           body += "<tr>";
 
@@ -117,6 +137,8 @@ router.post('/', function(req, res, next) {
     return body;
   }
 
+    // Generates the customer and company table
+    // Returns: the html-string
   function generateCustomerInfo() {
 
     var body = "<table style='width: 1024px; text-align: left;border-collapse: collapse;'>" +
@@ -145,6 +167,8 @@ router.post('/', function(req, res, next) {
     return body;
   }
 
+
+    // Sets the email
   function sendEmail(htmlBody) {
     var data = {
       from: 'Tival <no-reply@tival.se>',
