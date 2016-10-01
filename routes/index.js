@@ -63,7 +63,8 @@ router.post('/', function(req, res, next) {
     var htmlBody = "<h1>Orderbekräftelse</h1>" +
         "<h3>" + global.projectData.projectName + "</h3>" +
         "<br><div><b>Lägenhetsnummer: </b>" + global.userData.customerInfo.appartmentnumber + "</div>" +
-        "<div><b>Upprättad datum: </b>" + global.userData.customerInfo.date + "</div>";
+        "<div><" +
+        ">Upprättad datum: </b>" + global.userData.customerInfo.date + "</div>";
 
     htmlBody += "<br>";
     htmlBody += generateCustomerInfo();
@@ -110,16 +111,12 @@ router.post('/', function(req, res, next) {
         if (categoryItem != "categoryTitle") {
 
           body += "<tr>";
-          body += "<td>" + cart[category][categoryItem].categoryItemTitle + "</td>";
-
-            // Print "Ja" if the itemTitle is the same as the categoryItemTitle
-            if (cart[category][categoryItem].title==cart[category][categoryItem].categoryItemTitle) {
-                body += "<td>Ja</td>";
-            } else {
-                body += "<td>" + cart[category][categoryItem].title + "</td>";
-            }
-            //Price
-          body += "<td style='text-align: right;'>" + formatPrice(cart[category][categoryItem].price) + " kr</td>";
+            // Category
+            body += "<td>" + cart[category][categoryItem].categoryItemTitle + "</td>";
+            // Title
+            body += "<td>" + cart[category][categoryItem].title + "</td>";
+            // Price
+            body += "<td style='text-align: right;'>" + formatPrice(cart[category][categoryItem].price) + " kr</td>";
           body += "<tr>";
 
         }
@@ -181,6 +178,8 @@ router.post('/', function(req, res, next) {
 
     mailgun.messages().send(data, function (error, body) {
       console.log(body);
+
+        //Spara i firebase, typ
     });
   }
 
