@@ -63,7 +63,7 @@ router.post('/', function(req, res, next) {
     var htmlBody = "<h1>Orderbekräftelse</h1>" +
         "<h3>" + global.projectData.projectName + "</h3>" +
         "<br><div><b>Lägenhetsnummer: </b>" + global.userData.customerInfo.appartmentnumber + "</div>" +
-        "<div><b>Upprättad datum</b>" + global.userData.customerInfo.date + "</div>";
+        "<div><b>Upprättad datum:</b> " + global.userData.customerInfo.date + "</div>";
 
     htmlBody += "<br>";
     htmlBody += generateCustomerInfo();
@@ -169,8 +169,7 @@ router.post('/', function(req, res, next) {
     var data = {
       from: 'Tival <no-reply@tival.se>',
       to: global.userData.customerInfo.email,
-      cc: global.projectData.projectEmail,
-      bcc: 'salmin89@skenderovic.se;<123:123>',
+      bcc: global.projectData.projectEmail,
       subject: global.projectData.projectName + ' orderbekräftelse',
       html: htmlBody
     };
