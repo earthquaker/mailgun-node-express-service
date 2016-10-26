@@ -62,8 +62,8 @@ router.post('/', function(req, res, next) {
 
     var htmlBody = "<h1>Orderbekräftelse</h1>" +
         "<h3>" + global.projectData.projectName + "</h3>" +
-        "<br><div><b>Lägenhetsnummer: </b>" + global.userData.customerInfo.appartmentnumber + "</div>" +
-        "<div><b>Upprättad datum:</b> " + global.userData.customerInfo.date + "</div>";
+        "<br><div><b>Lägenhetsnummer: </b>" + (global.userData.customerInfo.appartmentnumber ? global.userData.customerInfo.appartmentnumber : "")  + "</div>" +
+        "<div><b>Upprättad datum:</b> " + (global.userData.customerInfo.date ? global.userData.customerInfo.date : "") + "</div>";
 
     htmlBody += "<br>";
     htmlBody += generateCustomerInfo();
@@ -97,7 +97,7 @@ router.post('/', function(req, res, next) {
 
       body += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
       body += "<tr>";
-      body += "<th>" + cart[category].categoryTitle + "</th>";
+      body += "<th>" + (cart[category].categoryTitle ? cart[category].categoryTitle : "") + "</th>";
       body += "<th></th>";
       body += "<th></th>";
       body += "</tr>";
@@ -111,9 +111,9 @@ router.post('/', function(req, res, next) {
 
           body += "<tr>";
             // Category
-            body += "<td>" + cart[category][categoryItem].categoryItemTitle + "</td>";
+            body += "<td>" + (cart[category][categoryItem].categoryItemTitle ? cart[category][categoryItem].categoryItemTitle : "") + "</td>";
             // Title
-            body += "<td>" + cart[category][categoryItem].title + "</td>";
+            body += "<td>" + (cart[category][categoryItem].title ? cart[category][categoryItem].title : "") + "</td>";
             // Price
             body += "<td style='text-align: right;'>" + formatPrice(cart[category][categoryItem].price) + " kr</td>";
           body += "<tr>";
@@ -137,29 +137,31 @@ router.post('/', function(req, res, next) {
     // Returns: the html-string
   function generateCustomerInfo() {
 
+      // This is kaos. Pls no look
+      var webadress = global.projectData.companyWebsite ? global.projectData.companyWebsite : "";
+      var webadressUrl = global.projectData.companyWebsite ? global.projectData.companyWebsite : "#";
     var body = "<table style='width: 1024px; text-align: left;border-collapse: collapse;'>" +
                   "<tr>" +
                     "<th style='width: 50%;'>Kund</th>" +
                     "<th style='width: 50%;'>" + global.projectData.companyName + "</th>" +
                   "</tr>" +
                   "<tr>" +
-                    "<td>" + global.userData.customerInfo.name + "</td>" +
-                    "<td>" + global.projectData.companyStreet + "</td>" +
+                    "<td>" + (global.userData.customerInfo.name ? global.userData.customerInfo.name : "") + "</td>" +
+                    "<td>" + (global.projectData.companyStreet ? global.projectData.companyStreet : "") + "</td>" +
                   "</tr>" +
                   "<tr>" +
-                    "<td>" + global.userData.customerInfo.phone + "</td>" +
-                    "<td>" + global.projectData.companyZip + " " + global.projectData.companyCity + "</td>" +
+                    "<td>" + (global.userData.customerInfo.phone ? global.userData.customerInfo.phone : "") + "</td>" +
+                    "<td>" + (global.projectData.companyZip && global.projectData.companyCity ? global.projectData.companyZip + " " + global.projectData.companyCity : "") + "</td>" +
                   "</tr>" +
                   "<tr>" +
-                    "<td>" + global.userData.customerInfo.email + "</td>" +
-                    "<td>" + global.projectData.companyPhone + "</td>" +
+                    "<td>" + (global.userData.customerInfo.email ? global.userData.customerInfo.email : "") + "</td>" +
+                    "<td>" + (global.projectData.companyPhone ? global.projectData.companyPhone : "") + "</td>" +
                   "</tr>" +
                   "<tr>" +
                     "<td></td>" +
-                    "<td><a href='" + global.projectData.companyWebsite + "'></a>" + global.projectData.companyWebsite + "</td>" +
+                    "<td><a href='" + webadressUrl + "'></a>" + webadress + "</td>" +
                   "</tr>" +
                 "</table>";
-
     return body;
   }
 
